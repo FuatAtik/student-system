@@ -1,0 +1,53 @@
+﻿@using Kusys.Entities.Concrete
+@model Course
+@{
+    ViewData["Title"] = "Course Create";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Course /</span> Edit</h4>
+    <div class="row">
+        <div class="col-xxl">
+            <div class="card mb-12">
+                <div class="card-body">
+                    @using (Html.BeginForm("Create", "Course", FormMethod.Post))
+                    {
+                        @Html.ValidationSummary(false)
+                        <form>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Course Id</label>
+                                <div class="col-sm-10">
+                                    <div class="col-sm-10 input-group input-group-merge">
+                                        <span class="input-group-text" id="basic-addon34" style="background-color: #5f6e7f;color: white"></span>
+                                        <input type="text" class="form-control" id="basic-url3" name="CourseId" aria-describedby="basic-addon34"/>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="Name">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="Name" id="Name"/>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="CourseCategoryId">Category</label>
+                                <div class="col-sm-10">
+                                    @Html.DropDownList("CourseCategoryId", null, htmlAttributes: new { @class = "form-control", name = "CourseCategoryId", id = "CourseCategoryId" })
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-end">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <a href="/course-list" class="btn btn-secondary">Back</a>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

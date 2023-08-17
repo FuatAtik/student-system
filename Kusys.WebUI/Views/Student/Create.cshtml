@@ -1,0 +1,138 @@
+﻿@using Kusys.Entities.Concrete
+@model Student
+@{
+    ViewData["Title"] = "Student Create";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Student /</span> Create</h4>
+    <div class="row">
+        <div class="col-xxl">
+            <div class="card mb-12">
+                <div class="card-body">
+                    @using (Html.BeginForm("Create", "Student", FormMethod.Post))
+                    {
+                        @Html.ValidationSummary(false)
+                        <span class="text-danger field-validation-error d-none" data-valmsg-replace="true" id="length-trIdentity-validation-error">Must be 11 characters!</span><br/>
+                        <span class="text-danger custom-hidden field-validation-error d-none" data-valmsg-replace="true" id="trIdentity-validation-error">Please Enter a Correct TR Number!</span>
+                        <form>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="FirstName">First Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="FirstName" id="FirstName" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="LastName">Last Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="LastName" id="LastName" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="Email">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="Email" id="Email"/>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="password">Password</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" name="password" id="password"/>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="TrIdentityNumber">Tr Identity Number</label>
+                                <div class="col-sm-10">
+                                    <input type="number" maxlength="11" class="form-control" name="TrIdentityNumber" id="TrIdentityNumber"/>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="BirthDate">Birth Date</label>
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control" name="BirthDate" id="BirthDate"/>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group select2-drpdwn">
+                                    <label for="tags">Course</label>
+                                    <select data-placeholder="type tags.." style="height: 120px" multiple class="js-example-basic-multiple col-sm-12" name="tags">
+                                        <option value=""></option>
+                                        @{
+                                            List<Course> tags = ViewBag.Courses;
+
+                                            if (tags != null)
+                                            {
+                                                foreach (var tag in tags)
+                                                {
+                                                    <option value="@tag.Id">@tag.CourseCategory.Name - @tag.Name </option>
+                                                } 
+                                            }
+                                        }
+                                    </select>
+                            </div>
+                            
+                            
+                            <div class="row justify-content-end">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <a href="/student-list" class="btn btn-secondary">Back</a>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+$(".chosen-select").chosen({
+  no_results_text: "Tag bulunamadı!"
+})
+</script>
+
+<script>
+    const trIdentityInput = document.getElementById("TrIdentityNumber");
+    const lengthErrorSpan = document.getElementById("length-trIdentity-validation-error");
+    const validationErrorSpan = document.getElementById("trIdentity-validation-error");
+    function VerifyTCNumber(tcno) {
+        let tcControl, total;
+        tcControl = tcno;
+        tcno = tcno.value;
+        total = Number(tcno.substring(0, 1)) + Number(tcno.substring(1, 2)) +
+            Number(tcno.substring(2, 3)) + Number(tcno.substring(3, 4)) +
+            Number(tcno.substring(4, 5)) + Number(tcno.substring(5, 6)) +
+            Number(tcno.substring(6, 7)) + Number(tcno.substring(7, 8)) +
+            Number(tcno.substring(8, 9)) + Number(tcno.substring(9, 10));
+        const strTotal = String(total);
+        result = strTotal.substring(strTotal.length, strTotal.length - 1);
+    
+        return result === tcno.substring(10, 11);
+    }
+    
+    trIdentityInput.addEventListener("input", function () {
+        const tcNumber = this.value;
+        if (tcNumber.length > 11) {
+            this.value = tcNumber.slice(0, 11); 
+        }
+        if (tcNumber.length !== 11) {
+            lengthErrorSpan.classList.remove("d-none");
+        } else {
+            lengthErrorSpan.classList.add("d-none");
+        }
+        if (tcNumber.length===0){
+            lengthErrorSpan.classList.add("d-none");
+            validationErrorSpan.classList.add("d-none");
+        }
+        if (VerifyTCNumber(this)) {
+            validationErrorSpan.classList.add("d-none");
+        } else {
+            validationErrorSpan.classList.remove("d-none");
+        }
+    });
+</script>

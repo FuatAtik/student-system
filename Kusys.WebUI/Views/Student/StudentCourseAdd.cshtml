@@ -1,0 +1,106 @@
+﻿@using Kusys.Entities.Concrete
+@model Student
+@{
+    ViewData["Title"] = "Course Create";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Course /</span> Create</h4>
+    <div class="row">
+        <div class="col-xxl">
+            <div class="card mb-12">
+                <div class="card-body">
+                    @using (Html.BeginForm("StudentCourseAdd", "Student", FormMethod.Post))
+                    {
+                        <form>
+                            <div class="form-group select2-drpdwn">
+                                <label for="tags">Course</label>
+                                <select data-placeholder="type tags.." style="height: 120px" multiple class="js-example-basic-multiple col-sm-12" name="tags">
+                                    <option value=""></option>
+                                    @{
+                                        List<Course> tags = ViewBag.Course;
+
+                                        List<int> thisStudentCourseId = new List<int>();
+                                        List<StudentCourseMapping> thisStudentCourses = ViewBag.ThisStudentCourses;
+
+                                        foreach (var item in thisStudentCourses)
+                                        {
+                                            thisStudentCourseId.Add(item.CourseId);
+                                        }
+
+                                    }
+                                    @foreach (var tag in tags)
+                                    {
+                                        if (thisStudentCourseId.Contains(tag.Id))
+                                        {
+                                            <option selected value="@tag.Id">@tag.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@tag.Id">@tag.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <br/>
+                            <div class="row justify-content-end">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <a href="/student-profile" class="btn btn-secondary">Back</a>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+$(".chosen-select").chosen({
+  no_results_text: "Tag bulunamadı!"
+})
+</script>
+
+<script>
+    const trIdentityInput = document.getElementById("TrIdentityNumber");
+    const lengthErrorSpan = document.getElementById("length-trIdentity-validation-error");
+    const validationErrorSpan = document.getElementById("trIdentity-validation-error");
+    function VerifyTCNumber(tcno) {
+        let tcControl, total;
+        tcControl = tcno;
+        tcno = tcno.value;
+        total = Number(tcno.substring(0, 1)) + Number(tcno.substring(1, 2)) +
+            Number(tcno.substring(2, 3)) + Number(tcno.substring(3, 4)) +
+            Number(tcno.substring(4, 5)) + Number(tcno.substring(5, 6)) +
+            Number(tcno.substring(6, 7)) + Number(tcno.substring(7, 8)) +
+            Number(tcno.substring(8, 9)) + Number(tcno.substring(9, 10));
+        const strTotal = String(total);
+        result = strTotal.substring(strTotal.length, strTotal.length - 1);
+    
+        return result === tcno.substring(10, 11);
+    }
+    
+    trIdentityInput.addEventListener("input", function () {
+        const tcNumber = this.value;
+        if (tcNumber.length > 11) {
+            this.value = tcNumber.slice(0, 11); 
+        }
+        if (tcNumber.length !== 11) {
+            lengthErrorSpan.classList.remove("d-none");
+        } else {
+            lengthErrorSpan.classList.add("d-none");
+        }
+        if (tcNumber.length===0){
+            lengthErrorSpan.classList.add("d-none");
+            validationErrorSpan.classList.add("d-none");
+        }
+        if (VerifyTCNumber(this)) {
+            validationErrorSpan.classList.add("d-none");
+        } else {
+            validationErrorSpan.classList.remove("d-none");
+        }
+    });
+</script>

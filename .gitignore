@@ -1,0 +1,11 @@
+﻿.idea
+Kusys.Business/bin
+Kusys.Core/obj
+Kusys.Core/bin
+Kusys.Business/obj
+Kusys.Data/bin
+Kusys.Data/obj
+Kusys.Entities/obj
+Kusys.Entities/bin
+Kusys.WebUI/bin
+Kusys.WebUI/obj

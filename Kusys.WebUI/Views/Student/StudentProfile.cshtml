@@ -1,0 +1,110 @@
+﻿@model Kusys.Entities.ViewModel.StudentViewModel
+@{
+    ViewData["Title"] = "Student Profile";
+    Layout = "_Layout";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Student /</span> Profile</h4>
+    <div class="row">
+        <div class="col-xxl">
+            <div class="card mb-12">
+                <div class="card-body">
+                    <form>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">First Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control"  value="@Model.FirstName" disabled="disabled"/>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Last Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" value="@Model.LastName" disabled="disabled"/>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" value="@Model.Email" disabled="disabled"/>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Tr Identity Number</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" value="@Model.TrIdentityNumber" disabled="disabled"/>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Birth Date</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control"  value="@Model.BirthDate.ToString("dddd, dd MMMM yyyy")" disabled="disabled"/>
+                                @* @Html.TextBoxFor(m => m.BirthDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", name = "BirthDate", id = "BirthDate" }) *@
+                            </div>
+                        </div>
+
+                        <div
+                            class="modal fade"
+                            id="modalToggle-@Model.StudentId"
+                            aria-labelledby="modalToggleLabel"
+                            tabindex="-1"
+                            style="display: none"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalToggleLabel">My Course Info</h5>
+                                        <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        
+                                        @if (Model.Courses != null)
+                                        {
+                                            foreach (var tag in Model.Courses)
+                                            {
+                                                var random = new Random();
+                                                var colorClasses = new string[] { "primary", "secondary", "success", "danger", "warning", "info", "dark" };
+                                                var randomColorClass = colorClasses[random.Next(colorClasses.Length)];
+                                                <p>
+                                                    <span class="badge bg-label-@randomColorClass">@tag</span>
+                                                </p>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-label-dark">The course you took was not found</span>
+                                        }
+
+                                    </div>
+                                    <div class="modal-footer">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-end">
+                            <div class="col-sm-10">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modalToggle-@Model.StudentId" class="btn btn-info">My Course</button>
+                                <a href="/student-course-add" class="btn btn-primary">Add Course</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(".chosen-select").chosen({
+  no_results_text: "Tag bulunamadı!"
+})
+</script>
